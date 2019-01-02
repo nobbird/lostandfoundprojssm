@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="zhn.dao.WupingMapper">
+<resultMap id="resM" type="wuping">
+    <id column="id" property="id" javaType="java.lang.Integer" jdbcType="INTEGER"></id>
+    <result column="flag" property="flag" javaType="java.lang.Integer" jdbcType="INTEGER"></result>
+    <result column="userId" property="userId" javaType="java.lang.String" jdbcType="VARCHAR"></result>
+    <result column="title" property="title" javaType="java.lang.String" jdbcType="VARCHAR"></result>
+    <result column="content" property="content" javaType="java.lang.String" jdbcType="VARCHAR"></result>
+    <result column="types" property="types" javaType="java.lang.String" jdbcType="VARCHAR"></result>
+    <result column="losttime" property="losttime" javaType="java.lang.String" jdbcType="VARCHAR"></result>
+    <result column="updatetime" property="updatetime" javaType="java.lang.String" jdbcType="VARCHAR"></result>
+    <result column="images" property="images" javaType="java.lang.String" jdbcType="VARCHAR"></result>
+    <result column="state" property="state" javaType="java.lang.String" jdbcType="VARCHAR"></result>
+    <association property="user" javaType="zhn.entity.User">
+        <result column="users.id" property="id" javaType="java.lang.Integer" jdbcType="INTEGER"></result>
+        <result column="username" property="username" javaType="java.lang.String" jdbcType="VARCHAR"></result>
+    </association>
+</resultMap>
+    <!-- 获取所有数据库wuping表中的所有物品记录 -->
+    <select id="getAllWuping" resultType="wuping">
+        SELECT * FROM wuping  ORDER BY id DESC
+    </select>
+
+    <select id="getListByPage" resultMap="resM" parameterType="Integer">
+        SELECT * FROM wuping inner join users on wuping.userId=users.id WHERE wuping.flag=#{flag} ORDER BY wuping.id DESC
+    </select>
+    <!-- 插入丢失物品信息-->
+    <insert id="wupingAdd" parameterType="wuping">
+        INSERT INTO wuping(flag,userId,title,content,types,losttime,state,images) VALUE(#{flag},#{userId},#{title},#{content},#{types},#{losttime},#{state},#{images})
+    </insert>
+
+    <select id="keyWordSearch"  resultType="wuping">
+        SELECT * FROM wuping WHERE content LIKE #{keyWord} AND flag =#{flag}
+    </select>
+
+    <!--获取flag为1或者为0的物品的数量-->
+    <select id="getWupingCount" resultType="int" parameterType="Integer">
+        select COUNT(*) from wuping WHERE flag=#{flag}
+    </select>
+
+    <delete id="deleteWuping"  parameterType="integer" >
+        delete FROM wuping WHERE id = #{id}
+    </delete>
+
+<!--    <select id="getWupingByPages" resultType="News">
+        select * from wuping where #{flag} = 0 limit #{0},#{1}
+    </select>-->
+
+</mapper>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="zhn.dao.ApplyMapper">
+    <resultMap id="applyEntity" type="Apply">
+        <id column="id" property="id" javaType="java.lang.Integer" jdbcType="INTEGER"></id>
+        <result column="tid" property="tid" javaType="java.lang.Integer" jdbcType="INTEGER"></result>
+        <result column="userId" property="userId" javaType="java.lang.String" jdbcType="VARCHAR"></result>
+        <result column="updatetime" property="updatetime" javaType="java.lang.String" jdbcType="VARCHAR"></result>
+        <result column="content" property="content" javaType="java.lang.String" jdbcType="VARCHAR"></result>
+        <result column="flag" property="flag" javaType="java.lang.Integer" jdbcType="INTEGER"></result>
+        <result column="reason" property="reason" javaType="java.lang.String" jdbcType="VARCHAR"></result>
+        <association property="wuping" javaType="zhn.entity.Wuping">
+            <result column="wuping.id" property="id" javaType="java.lang.Integer" jdbcType="INTEGER"></result>
+            <result column="title" property="title" javaType="java.lang.String" jdbcType="VARCHAR"></result>
+        </association>
+
+        <association property="user" javaType="zhn.entity.User">
+            <result column="user.id" property="id" javaType="java.lang.Integer" jdbcType="INTEGER"></result>
+            <result column="username" property="username" javaType="java.lang.String" jdbcType="VARCHAR"></result>
+        </association>
+
+    </resultMap>
+
+
+    <insert id="applyWuping" parameterType="apply">
+        INSERT INTO found (tid,userId,reason,content)VALUE (#{tid},#{userId},#{reason},#{content})
+    </insert>
+
+    <select id="getAllApply" resultMap="applyEntity">
+        SELECT * FROM (found INNER JOIN wuping on found.tid=wuping.id)
+        INNER JOIN users on found.userId=users.id
+        ORDER BY found.id DESC
+    </select>
+
+    <update id="changeFlag" parameterType="Integer">
+        UPDATE found SET flag=#{flag}
+        where id=#{id}
+    </update>
+</mapper>

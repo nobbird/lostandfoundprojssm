@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="lostandfoundprojssm:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="lostandfoundssm.war">
+      <element id="artifact" artifact-name="lostandfoundprojssm:war exploded" />
+    </root>
+  </artifact>
+</component>

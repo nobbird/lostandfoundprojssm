@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="zhn.dao.UserMapper">
+
+    <!-- 查询用户表记录数 -->
+    <select id="usersCount" resultType="int" >
+        select count(*) as count from users
+    </select>
+
+    <!-- 登录 -->
+    <select id="login" resultType="user" parameterType="user">
+        SELECT * FROM users WHERE username=#{username} AND userpass=#{userpass}
+    </select>
+
+    <!-- 注册 -->
+    <insert id="register" parameterType="user">
+        INSERT INTO users(username,userpass) VALUE(#{username},#{userpass})
+    </insert>
+
+    <!-- 获取所有数据库中的用户 -->
+    <select id="getAllUser" resultType="user">
+        SELECT * FROM users
+    </select>
+
+    <!-- 删除一个用户 -->
+    <delete id="deleteUser" parameterType="Integer">
+        DELETE FROM users where id=#{id}
+    </delete>
+
+    <!-- 根据用户名称查询用户列表(模糊查询) -->
+    <select id="findUserByName" resultType="user" parameterType="String">
+        select * from users where username like #{userName}
+    </select>
+
+    <update id="updateUser" parameterType="user">
+        update users set username=#{username},userpass=#{userpass},usertel=#{usertel},useremail=#{useremail},usernumb=#{usernumb}
+        where id = #{id}
+    </update>
+
+    <!-- 获取所有数据库中指定id的用户 -->
+    <select id="findUserById" resultType="user" parameterType="Integer">
+        SELECT * FROM users WHERE id=#{id}
+    </select>
+
+</mapper>
